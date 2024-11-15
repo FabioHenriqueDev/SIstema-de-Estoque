@@ -98,12 +98,13 @@ def remover_produto():
 
 def listar_produto():
     produtos = input('Digite o produto que deseje listar: ').lower()
-    print('\n')
+    
 
     produto = session.query(Estoque).filter(Estoque.produto == produtos).first()
 
     if not produto:
-        console.print('AVISO: Esse produto não existe.')
+        console.print('AVISO: Esse produto não existe.', style='yellow')
+        sys.exit()
     
    
     console.print(f"ID: {produto.id}", style='blue')
