@@ -83,7 +83,7 @@ def adicionar_produto():
         
 
 def remover_produto():
-    produto_a_remover = input('Digite o produto que você deseja remover: ')
+    produto_a_remover = input('Digite o produto que você deseja remover: ').lower()
     pergunta = session.query(Estoque).filter(Estoque.produto == produto_a_remover).first()
 
     if pergunta is not None:
@@ -118,11 +118,13 @@ def listar_produto():
 
 
 def editar_produto():
-    pergunta = input('Digite o produto que você deseje editar: ')
+    pergunta = input('Digite o produto que você deseje editar: ').lower()
     pergunta = session.query(Estoque).filter(Estoque.produto == pergunta).first()
 
     if pergunta is None:
-        console.print('AVISO: Esse produto não existe', style='yellow')
+        console.print('AVISO: Esse produto não existe.', style='yellow')
+        console.print('AVISO: Você pode ter digitado o nome do produto errado.', style='yellow')
+        sys.exit()
 
     produto = input('Digite o nome do produto: ').lower()
     pergunta.produto = produto
@@ -132,18 +134,25 @@ def editar_produto():
         pergunta.quantidade = quantidade
     
     except ValueError:
-        console.print('ERROR: Digite números e não letras', style='red')
+        console.print('ERROR: Digite números e não letras ou digite números inteiros', style='red')
+        sys.exit()
 
-    preco_unitario = float(input('Digite o preço unitário: '))
-    pergunta.preco_unitario = preco_unitario
+    try:
+        preco_unitario = float(input('Digite o preço unitário: '))
+        pergunta.preco_unitario = preco_unitario
+    
+    except ValueError:
+        console.print('ERROR: Digite números e não letras', style='red')
+        sys.exit()
+
 
     data_de_entrega = datetime.now().date()
     pergunta.data_de_entrega = data_de_entrega
 
-    fornecedor = input('Digite o nome do fornecedor: ')
+    fornecedor = input('Digite o nome do fornecedor: ').lower()
     pergunta.fornecedor = fornecedor
 
-    categoria = input("Digite a categoria: ")
+    categoria = input("Digite a categoria: ").lower()
     pergunta.categoria = categoria
 
    
@@ -161,7 +170,7 @@ def menu():
                         
                         '1.Adicionar Produto',
                         '2.Remover Produto',
-                        '3.Listar Produto',
+                        '3.Mostrar informações do Produto',
                         '4.Editar Produto',
                         '5.Sair'                   
                         
@@ -178,7 +187,7 @@ def menu():
     elif resultado['opcao'] == '2.Remover Produto':
         remover_produto()
 
-    elif resultado['opcao'] == '3.Listar Produto':
+    elif resultado['opcao'] == '3.Mostrar informações do Produto':
         listar_produto()
 
     elif resultado['opcao'] == '4.Editar Produto':
