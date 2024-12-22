@@ -201,3 +201,5 @@ def menu():
     
 
 menu()
+
+print("Obrigado por utilizar nosso programa.")
