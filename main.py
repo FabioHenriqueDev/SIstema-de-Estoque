@@ -202,4 +202,4 @@ def menu():
 
 menu()
 
-print("Obrigado por utilizar nosso programa.")
+print("Obrigado por utilizar meu programa.")
